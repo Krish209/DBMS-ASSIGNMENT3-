@@ -140,7 +140,7 @@ CREATE TABLE Customer_feedback (
     Outlet_ID INT,
     Customer_email VARCHAR(30),
     Customer_rating FLOAT,
-    FOREIGN KEY (Outlet_ID) REFERENCES Outlet(Outlet_ID)
+    FOREIGN KEY (Outlet_ID) REFERENCES Outlet(Outlet_ID) ON DELETE CASCADE
 );
 
 -- Sample Data with primary keys included
@@ -169,7 +169,7 @@ CREATE TABLE Inventory (
     Outlet_ID INT,
     Item_name VARCHAR(100) NOT NULL,
     Price DECIMAL(10, 2),
-    FOREIGN KEY (Outlet_ID) REFERENCES Outlet(Outlet_ID)
+    FOREIGN KEY (Outlet_ID) REFERENCES Outlet(Outlet_ID) ON DELETE CASCADE
 );
 
 -- Sample Data with primary keys included
@@ -201,7 +201,7 @@ CREATE TABLE Employees (
     Role VARCHAR(20),
     Mobile_number BIGINT CHECK (Mobile_number >= 1000000000 AND Mobile_number < 10000000000),
     Shift_time VARCHAR(30),
-    FOREIGN KEY (Outlet_ID) REFERENCES Outlet(Outlet_ID)
+    FOREIGN KEY (Outlet_ID) REFERENCES Outlet(Outlet_ID) ON DELETE CASCADE
 );
 
 -- Sample Data with primary keys included
@@ -228,7 +228,7 @@ CREATE TABLE Contract (
     Start_date DATE,
     End_date DATE,
     Contract_status VARCHAR(50),
-    FOREIGN KEY (Outlet_ID) REFERENCES Outlet(Outlet_ID)
+    FOREIGN KEY (Outlet_ID) REFERENCES Outlet(Outlet_ID) ON DELETE CASCADE
 );
 
 -- Sample Data with primary keys included

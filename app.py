@@ -58,10 +58,104 @@ def outlet_management():
     else:
         query = "SELECT Outlet_ID, Outlet_name, Location_name, Contact_No, timings, Ratings FROM Outlet"
     cur.execute(query)
-    outlets = cur.fetchall()  # Fetch all rows
+    outlets = cur.fetchall()
     cur.close()
     return render_template("outlet_management.html", outlets=outlets)
 
+#INSERT FEATURE
+@app.route('/insert_outlet', methods = ['POST'])
+def insert_outlet():
+    if request.method == "POST":
+        name = request.form['name']
+        Location = request.form['Location']
+        Contact = request.form['Contact']
+        Timings = request.form['Timings']
+        Contact = request.form['Contact']
+        Rating  = float(request.form['Rating'])
+        import random
+        stakeholder_id = random.randint(1, 15)
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO Outlet (Stakeholder_ID, Outlet_name, Location_name, Contact_No, timings, Ratings) VALUES (%s, %s, %s, %s, %s, %s)", (stakeholder_id, name, Location, Contact, Timings, Rating))
+        mysql.connection.commit()
+        return redirect(url_for('outlet_management'))
+
+
+#DELETE FEATURE
+    
+# CASCADE Method
+    
+# @app.route('/delete/<string:id_data>', methods=['GET'])
+# def delete(id_data):
+#     try:
+#         cur = mysql.connection.cursor()
+
+#         # Delete the outlet record
+#         cur.execute("DELETE FROM Outlet WHERE Outlet_ID = %s", (id_data,))
+        
+#         # No need to commit since cascade deletion will handle related records
+        
+#         cur.close()
+
+#         flash("Record and related data have been deleted successfully")
+#         return redirect(url_for('outlet_management'))
+#     except Exception as e:
+#        print("Error:", e)
+#        flash("Error occurred while deleting record: " + str(e))
+#        return redirect(url_for('outlet_management'))
+
+
+
+# Temporarily disable foreign key constraints before deleting the record and then re-enable them afterward.
+# It's working properly but not the CASCADE
+    
+@app.route('/delete/<string:id_data>', methods=['GET'])
+def delete(id_data):
+    try:
+        # Disable foreign key checks
+        cur = mysql.connection.cursor()
+        cur.execute("SET FOREIGN_KEY_CHECKS = 0")
+        
+        # Delete the record
+        cur.execute("DELETE FROM Outlet WHERE Outlet_ID = %s", (id_data,))
+        mysql.connection.commit()
+        cur.close()
+        
+        # Re-enable foreign key checks
+        cur = mysql.connection.cursor()
+        cur.execute("SET FOREIGN_KEY_CHECKS = 1")
+        cur.close()
+    except Exception as e:
+        # If an error occurs, rollback the changes and re-enable foreign key checks
+        mysql.connection.rollback()
+        flash("Error deleting record: {}".format(str(e)))
+    return redirect(url_for('outlet_management'))
+
+
+#UPDATE FEATURE
+@app.route('/update_outlet', methods = ['POST', 'GET'])
+def update():
+    if request.method == "POST":
+        id_data  = request.form['id']
+        name = request.form['name']
+        Location = request.form['Location']
+        Contact = request.form['Contact']
+        Timings = request.form['Timings']
+        Contact = request.form['Contact']
+        Rating  = float(request.form['Rating'])
+        import random
+        stakeholder_id = random.randint(1, 15)
+
+        cur = mysql.connection.cursor()
+        cur.execute("""
+            UPDATE Outlet SET Outlet_name=%s, Location_name=%s, Contact_No=%s, timings=%s, Ratings=%s
+            WHERE Outlet_ID=%s
+            """, (name, Location, Contact, Timings, Rating, id_data))
+
+        flash("Data Updated Successfully")
+        mysql.connection.commit()
+        return redirect(url_for('outlet_management'))
+
+    
 
 @app.route("/stakeholder_details", methods=['GET', 'POST'])
 def  stakeholder_details():
