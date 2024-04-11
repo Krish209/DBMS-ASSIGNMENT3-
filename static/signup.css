@@ -98,7 +98,7 @@ button:hover {
 .userTypeContainer {
   display: flex;
   align-items: center;
-  margin-top: 10px;
+  /* margin-top: 10px; */
   /* margin-bottom: 1px; */
 }
 
@@ -135,5 +135,5 @@ select {
 }
 
 .eye-icon:hover {
-  color: #2f14dd; /* Change color on hover if needed */
+  color: #2f14dd;
 }

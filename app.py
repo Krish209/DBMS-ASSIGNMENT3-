@@ -35,7 +35,7 @@ def login():
 @app.route("/login", methods=["POST"])
 def login_user():
     email = request.form.get("username")
-    password = request.form.get("pswrd")
+    password = request.form.get("password")
     user_type = request.form.get("userType")
     cur = mysql.connection.cursor()
 
