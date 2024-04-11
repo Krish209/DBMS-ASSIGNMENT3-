@@ -60,7 +60,9 @@
                         <th>Stakeholder name</th>
                         <th>Description</th>
                         <th>Warning Issued</th>
+                        {% if user_type=='stakeholder' %}
                         <th>Penalty Amount</th>
+                        {% endif %}
                         
                        
                     </tr>
@@ -73,7 +75,10 @@
                         <td>{{ survey[3] }}</td> <!-- Stakeholder -->
                         <td>{{ survey[4] }}</td> <!-- Description -->
                         <td>{{ survey[5] }}</td> <!-- Warning Issued -->
+                        {% if user_type=='stakeholder' %}
                         <td>{{ survey[6] }}</td> <!-- Penalty -->
+                        {% endif %}
+                        
                         
                     </tr>
                     {% endfor %}
